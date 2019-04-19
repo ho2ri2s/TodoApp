@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import java.util.List;
 
 public class MemoAdapter extends ArrayAdapter<Memo> {
@@ -29,9 +28,11 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
 
         TextView titleText = (TextView)convertView.findViewById(R.id.titleText);
         TextView contentText = (TextView)convertView.findViewById(R.id.contentText);
+        TextView updateDateText = (TextView)convertView.findViewById(R.id.updateDateText);
 
         titleText.setText(memo.title);
         contentText.setText(memo.content);
+        updateDateText.setText(memo.updateDate);
 
         return convertView;
     }
