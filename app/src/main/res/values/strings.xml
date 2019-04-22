@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TodoApp</string>
+    <string name="delete_todo">delete</string>
 </resources>
