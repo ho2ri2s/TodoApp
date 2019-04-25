@@ -27,17 +27,8 @@ public class MainActivity extends AppCompatActivity {
         //realmを開く
         realm = Realm.getDefaultInstance();
 
-        listView = (ListView) findViewById(R.id.listView);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Memo memo = (Memo) adapterView.getItemAtPosition(position);
-                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                intent.putExtra("updateDate", memo.updateDate);
-                startActivity(intent);
+        listView = (ListView)findViewById(R.id.listView);
 
-            }
-        });
 
     }
 

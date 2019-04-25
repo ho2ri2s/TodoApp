@@ -74,6 +74,8 @@ public class DetailActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.delete_todo:
                 delete();
+                //メモを消したらMainActivityへ戻る
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
