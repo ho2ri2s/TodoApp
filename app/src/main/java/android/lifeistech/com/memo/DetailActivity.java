@@ -1,5 +1,7 @@
 package android.lifeistech.com.memo;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -7,9 +9,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -73,9 +75,23 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.delete_todo:
-                delete();
-                //メモを消したらMainActivityへ戻る
-                finish();
+                //ミスタッチ防止
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("本当に削除していいですか？")
+                        .setPositiveButton("削除", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //メモ削除
+                                delete();
+                                Toast.makeText(DetailActivity.this, "削除しました", Toast.LENGTH_SHORT).show();
+                                //メモを消したらMainActivityへ戻る
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("キャンセル", null)
+                        .show();
+
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
