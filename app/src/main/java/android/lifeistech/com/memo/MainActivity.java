@@ -2,6 +2,7 @@ package android.lifeistech.com.memo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     public Realm realm;
     public ListView listView;
     RealmResults<Memo> results;
+    CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
         //realmを開く
         realm = Realm.getDefaultInstance();
-
         listView = (ListView)findViewById(R.id.listView);
-
+        coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinatorLayout);
     }
 
     @Override
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     public void setMemoList(RealmResults<Memo> results){
         //realmから読み取る
         List<Memo> items = realm.copyFromRealm(results);
-        MemoAdapter adapter = new MemoAdapter(getApplicationContext(), R.layout.layout_item_memo, items);
+        MemoAdapter adapter = new MemoAdapter(getApplicationContext(), R.layout.layout_item_memo, items, coordinatorLayout);
         listView.setAdapter(adapter);
     }
 

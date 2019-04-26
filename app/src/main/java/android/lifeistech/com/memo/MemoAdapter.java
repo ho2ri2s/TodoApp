@@ -3,6 +3,8 @@ package android.lifeistech.com.memo;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,13 +25,14 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
     private LayoutInflater layoutinflater;
     private List<Memo> mMemos;
     ViewHolder viewHolder;
+    CoordinatorLayout coordinatorLayout;
 
 
-
-    MemoAdapter(Context context, int textViewResourceId, List<Memo> objects) {
+    MemoAdapter(Context context, int textViewResourceId, List<Memo> objects, CoordinatorLayout coordinatorLayout) {
         super(context, textViewResourceId, objects);
         layoutinflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mMemos = objects;
+        this.coordinatorLayout = coordinatorLayout;
     }
 
     public static class ViewHolder{
@@ -88,7 +91,7 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
 
             viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void onClick(final View view) {
 
                     //チェックされた際にタスク完了状態。保存するためにMemoに状態を格納。
                     final CheckBox checkBoxView = (CheckBox)view;
@@ -105,8 +108,11 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
                         public void execute(Realm realm) {
                             if(checkBoxView.isChecked()){
                                 realmMemo.isCompleted = true;
+                                Snackbar.make(coordinatorLayout, "Task is Completed", Snackbar.LENGTH_SHORT).show();
                             }else{
                                 realmMemo.isCompleted = false;
+                                Snackbar.make(coordinatorLayout, "Task is uncompleted", Snackbar.LENGTH_SHORT).show();
+
                             }
 
                         }
