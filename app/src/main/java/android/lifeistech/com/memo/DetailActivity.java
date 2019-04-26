@@ -1,6 +1,7 @@
 package android.lifeistech.com.memo;
 
 import android.content.DialogInterface;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -90,8 +91,10 @@ public class DetailActivity extends AppCompatActivity {
                         })
                         .setNegativeButton("キャンセル", null)
                         .show();
-
-
+                return true;
+            case android.R.id.home:
+                //マニフェストに戻り先（親Activity）を記述する必要がある
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

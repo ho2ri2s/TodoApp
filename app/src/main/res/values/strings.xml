@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">TodoApp</string>
     <string name="delete_todo">delete</string>
+    <string name="filtering_all">ALL</string>
+    <string name="filtering_compleated">COMPLEATED</string>
+    <string name="filtering_uncompleated">UNCOMPLEATED</string>
 </resources>

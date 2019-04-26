@@ -93,8 +93,8 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
                     //チェックされた際にタスク完了状態。保存するためにMemoに状態を格納。
                     final CheckBox checkBoxView = (CheckBox)view;
                     //レルムを開く
-                    final Realm realm = null;
-                    realm.getDefaultInstance();
+                    final Realm realm = Realm.getDefaultInstance();
+
                     //getItem(position)で取得したメモのupdateDateを用いて、Realmで管理されているメモ情報を探す。
                     final Memo realmMemo = realm.where(Memo.class)
                                            .equalTo("updateDate", memo.updateDate)
@@ -108,6 +108,7 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
                             }else{
                                 realmMemo.isCompleted = false;
                             }
+
                         }
                     });
                     //必ず閉める

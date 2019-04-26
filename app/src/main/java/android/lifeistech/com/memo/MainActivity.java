@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     public Realm realm;
     public ListView listView;
+    RealmResults<Memo> results;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setMemoList();
+        results = realm.where(Memo.class).findAll();
+        setMemoList(results);
     }
 
 
@@ -49,13 +53,36 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void setMemoList(){
+    public void setMemoList(RealmResults<Memo> results){
         //realmから読み取る
-        RealmResults<Memo> results = realm.where(Memo.class).findAll();
         List<Memo> items = realm.copyFromRealm(results);
-
         MemoAdapter adapter = new MemoAdapter(getApplicationContext(), R.layout.layout_item_memo, items);
-
         listView.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.filtering_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.all:
+                results = realm.where(Memo.class).findAll();
+                setMemoList(results);
+                return true;
+            case R.id.compleated:
+                results = realm.where(Memo.class).equalTo("isCompleted", true).findAll();
+                setMemoList(results);
+                return true;
+            case R.id.uncompleated:
+                results = realm.where(Memo.class).equalTo("isCompleted", false).findAll();
+                setMemoList(results);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

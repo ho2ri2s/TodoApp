@@ -1,7 +1,9 @@
 package android.lifeistech.com.memo;
 
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +31,7 @@ public class CreateActivity extends AppCompatActivity {
         titleEditText = (EditText) findViewById(R.id.titleEditText);
         contentEditText = (EditText)findViewById(R.id.contentEditText);
 
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -69,5 +71,15 @@ public class CreateActivity extends AppCompatActivity {
         finish();
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                //マニフェストに戻り先（親Activity）を記述する必要がある
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+        }
+    }
 }
