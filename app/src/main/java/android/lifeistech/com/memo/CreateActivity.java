@@ -2,7 +2,6 @@ package android.lifeistech.com.memo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,6 +50,7 @@ public class CreateActivity extends AppCompatActivity {
                 memo.title = title;
                 memo.updateDate = updateDate;
                 memo.content = content;
+                memo.isCompleted = false;   //最初はタスク未完了
             }
         });
     }
@@ -67,18 +67,6 @@ public class CreateActivity extends AppCompatActivity {
         save(title, updateDate, content);
 
         finish();
-    }
-
-    public void check(String title, String updateDate, String content){
-
-        Memo memo = new Memo();
-
-        memo.title = title;
-        memo.updateDate = updateDate;
-        memo.content = content;
-
-        Log.d("Memo", memo.title);
-
     }
 
 

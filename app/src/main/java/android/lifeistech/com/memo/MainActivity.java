@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setMemoList();
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
