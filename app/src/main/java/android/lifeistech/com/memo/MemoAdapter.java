@@ -25,27 +25,23 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
     private LayoutInflater layoutinflater;
     private List<Memo> mMemos;
     ViewHolder viewHolder;
-    CoordinatorLayout coordinatorLayout;
 
 
-    MemoAdapter(Context context, int textViewResourceId, List<Memo> objects, CoordinatorLayout coordinatorLayout) {
+    MemoAdapter(Context context, int textViewResourceId, List<Memo> objects) {
         super(context, textViewResourceId, objects);
         layoutinflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mMemos = objects;
-        this.coordinatorLayout = coordinatorLayout;
     }
 
     public static class ViewHolder{
         TextView titleText;
-        TextView contentText;
-        TextView updateDateText;
+        TextView deadlineText;
         LinearLayout linearLayout;
         CheckBox checkBox;
 
         public ViewHolder(View convertView){
             titleText = (TextView)convertView.findViewById(R.id.titleText);
-            contentText = (TextView)convertView.findViewById(R.id.contentText);
-            updateDateText = (TextView)convertView.findViewById(R.id.updateDateText);
+            deadlineText = (TextView)convertView.findViewById(R.id.deadlineText);
             linearLayout = (LinearLayout)convertView.findViewById(R.id.linearLayout);
             checkBox = (CheckBox)convertView.findViewById(R.id.checkBox);
         }
@@ -58,7 +54,7 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
 
 
         if (convertView == null) {
@@ -75,8 +71,7 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
         if(memo != null) {
 
             viewHolder.titleText.setText(memo.title);
-            viewHolder.contentText.setText(memo.content);
-            viewHolder.updateDateText.setText(memo.updateDate);
+            viewHolder.deadlineText.setText(memo.dateDeadline + "   " + memo.timeDeadline + "まで");
             viewHolder.checkBox.setChecked(memo.isCompleted);
 
             viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -108,11 +103,10 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
                         public void execute(Realm realm) {
                             if(checkBoxView.isChecked()){
                                 realmMemo.isCompleted = true;
-                                Snackbar.make(coordinatorLayout, "Task is Completed", Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(parent, "Task is Completed", Snackbar.LENGTH_SHORT).show();
                             }else{
                                 realmMemo.isCompleted = false;
-                                Snackbar.make(coordinatorLayout, "Task is uncompleted", Snackbar.LENGTH_SHORT).show();
-
+                                Snackbar.make(parent, "Task is uncompleted", Snackbar.LENGTH_SHORT).show();
                             }
 
                         }

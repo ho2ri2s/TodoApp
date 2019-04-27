@@ -1,5 +1,7 @@
 package android.lifeistech.com.memo;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
@@ -9,17 +11,26 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
+import java.util.Calendar;
 
 import io.realm.Realm;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     Realm realm;
 
     EditText titleEditText;
     EditText contentEditText;
+    TextView dateText;
+    TextView timeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,21 +40,27 @@ public class DetailActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
 
         titleEditText = (EditText) findViewById(R.id.titleEditText);
-        contentEditText = (EditText)findViewById(R.id.contentEditText);
+        contentEditText = (EditText) findViewById(R.id.contentEditText);
+        dateText = (TextView) findViewById(R.id.dateText);
+        timeText = (TextView) findViewById(R.id.timeText);
 
+        dateText.setOnClickListener(this);
+        timeText.setOnClickListener(this);
         showData();
     }
 
-    public void showData(){
+    public void showData() {
 
         final Memo memo = realm.where(Memo.class).equalTo("updateDate",
                 getIntent().getStringExtra("updateDate")).findFirst();
 
         titleEditText.setText(memo.title);
         contentEditText.setText(memo.content);
+        dateText.setText(memo.dateDeadline);
+        timeText.setText(memo.timeDeadline);
     }
 
-    public void update(View view){
+    public void update(View view) {
 
         final Memo memo = realm.where(Memo.class).equalTo("updateDate",
                 getIntent().getStringExtra("updateDate")).findFirst();
@@ -53,6 +70,8 @@ public class DetailActivity extends AppCompatActivity {
             public void execute(Realm realm) {
                 memo.title = titleEditText.getText().toString();
                 memo.content = contentEditText.getText().toString();
+                memo.dateDeadline = dateText.getText().toString();
+                memo.timeDeadline = timeText.getText().toString();
             }
         });
 
@@ -74,7 +93,7 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.delete_todo:
                 //ミスタッチ防止
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -101,7 +120,7 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    public void delete(){
+    public void delete() {
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -115,5 +134,43 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.dateText:
+                final Calendar date = Calendar.getInstance();
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        DetailActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                dateText.setText(year + "/" + month + "/" + day);
+                            }
+                        },
+                        date.get(Calendar.YEAR),
+                        date.get(Calendar.MONTH),
+                        date.get(Calendar.DAY_OF_MONTH));
+
+                datePickerDialog.show();
+                break;
+            case R.id.timeText:
+                final Calendar time = Calendar.getInstance();
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        DetailActivity.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                timeText.setText(hour + " : " + minute);
+                            }
+                        },
+                        time.get(Calendar.HOUR_OF_DAY),
+                        time.get(Calendar.MINUTE),
+                        true);
+
+                timePickerDialog.show();
+                break;
+        }
     }
 }

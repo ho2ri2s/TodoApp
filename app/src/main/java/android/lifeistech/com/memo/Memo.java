@@ -8,5 +8,7 @@ public class Memo extends RealmObject {
     public String updateDate;
     public String content;
     public boolean isCompleted;
+    public String dateDeadline;
+    public String timeDeadline;
 
 }

@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     public Realm realm;
     public ListView listView;
     RealmResults<Memo> results;
-    CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         //realmを開く
         realm = Realm.getDefaultInstance();
         listView = (ListView)findViewById(R.id.listView);
-        coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinatorLayout);
     }
 
     @Override
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     public void setMemoList(RealmResults<Memo> results){
         //realmから読み取る
         List<Memo> items = realm.copyFromRealm(results);
-        MemoAdapter adapter = new MemoAdapter(getApplicationContext(), R.layout.layout_item_memo, items, coordinatorLayout);
+        MemoAdapter adapter = new MemoAdapter(getApplicationContext(), R.layout.layout_item_memo, items);
         listView.setAdapter(adapter);
     }
 
