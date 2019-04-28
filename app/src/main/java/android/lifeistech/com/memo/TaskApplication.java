@@ -4,7 +4,7 @@ import android.app.Application;
 
 import io.realm.Realm;
 
-public class MemoApplication extends Application {
+public class TaskApplication extends Application {
 
     @Override
     public void onCreate() {

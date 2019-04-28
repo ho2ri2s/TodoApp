@@ -1,17 +1,14 @@
 package android.lifeistech.com.memo;
 
 import android.content.Intent;
+import android.lifeistech.com.memo.R;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -21,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     public Realm realm;
     public ListView listView;
-    RealmResults<Memo> results;
+    RealmResults<Task> results;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        results = realm.where(Memo.class).findAll();
+        results = realm.where(Task.class).findAll();
         setMemoList(results);
     }
 
@@ -52,10 +49,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void setMemoList(RealmResults<Memo> results){
+    public void setMemoList(RealmResults<Task> results){
         //realmから読み取る
-        List<Memo> items = realm.copyFromRealm(results);
-        MemoAdapter adapter = new MemoAdapter(getApplicationContext(), R.layout.layout_item_memo, items);
+        List<Task> items = realm.copyFromRealm(results);
+        TaskAdapter adapter = new TaskAdapter(getApplicationContext(), R.layout.layout_item_task_main, items);
         listView.setAdapter(adapter);
     }
 
@@ -69,15 +66,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.all:
-                results = realm.where(Memo.class).findAll();
+                results = realm.where(Task.class).findAll();
                 setMemoList(results);
                 return true;
             case R.id.compleated:
-                results = realm.where(Memo.class).equalTo("isCompleted", true).findAll();
+                results = realm.where(Task.class).equalTo("isCompleted", true).findAll();
                 setMemoList(results);
                 return true;
             case R.id.uncompleated:
-                results = realm.where(Memo.class).equalTo("isCompleted", false).findAll();
+                results = realm.where(Task.class).equalTo("isCompleted", false).findAll();
                 setMemoList(results);
                 return true;
             default:

@@ -2,10 +2,9 @@ package android.lifeistech.com.memo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.lifeistech.com.memo.R;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,23 +13,21 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import io.realm.Realm;
 
-public class MemoAdapter extends ArrayAdapter<Memo> {
+public class TaskAdapter extends ArrayAdapter<Task> {
 
     private LayoutInflater layoutinflater;
-    private List<Memo> mMemos;
+    private List<Task> mTasks;
     ViewHolder viewHolder;
 
 
-    MemoAdapter(Context context, int textViewResourceId, List<Memo> objects) {
+    TaskAdapter(Context context, int textViewResourceId, List<Task> objects) {
         super(context, textViewResourceId, objects);
         layoutinflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mMemos = objects;
+        mTasks = objects;
     }
 
     public static class ViewHolder{
@@ -49,8 +46,8 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
 
     @Nullable
     @Override
-    public Memo getItem(int position) {
-        return  mMemos.get(position);
+    public Task getItem(int position) {
+        return  mTasks.get(position);
     }
 
     @Override
@@ -58,7 +55,7 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
 
 
         if (convertView == null) {
-            convertView = layoutinflater.from(getContext()).inflate(R.layout.layout_item_memo, null);
+            convertView = layoutinflater.from(getContext()).inflate(R.layout.layout_item_task_main, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }else{
@@ -66,19 +63,19 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
         }
 
         //realmに管理されていない、メモの情報を取得
-        final Memo memo = getItem(position);
+        final Task task = getItem(position);
 
-        if(memo != null) {
+        if(task != null) {
 
-            viewHolder.titleText.setText(memo.title);
-            viewHolder.deadlineText.setText(memo.dateDeadline + "   " + memo.timeDeadline + "まで");
-            viewHolder.checkBox.setChecked(memo.isCompleted);
+            viewHolder.titleText.setText(task.title);
+            viewHolder.deadlineText.setText(task.dateDeadline + "   " + task.timeDeadline + "まで");
+            viewHolder.checkBox.setChecked(task.isCompleted);
 
             viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(view.getContext(), DetailActivity.class);
-                    intent.putExtra("updateDate", memo.updateDate);
+                    Intent intent = new Intent(view.getContext(), TaskActivity.class);
+                    intent.putExtra("updateDate", task.updateDate);
                     view.getContext().startActivity(intent);
 
                 }
@@ -94,18 +91,18 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
                     final Realm realm = Realm.getDefaultInstance();
 
                     //getItem(position)で取得したメモのupdateDateを用いて、Realmで管理されているメモ情報を探す。
-                    final Memo realmMemo = realm.where(Memo.class)
-                                           .equalTo("updateDate", memo.updateDate)
+                    final Task realmTask = realm.where(Task.class)
+                                           .equalTo("updateDate", task.updateDate)
                                            .findFirst();
 
                     realm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
                             if(checkBoxView.isChecked()){
-                                realmMemo.isCompleted = true;
+                                realmTask.isCompleted = true;
                                 Snackbar.make(parent, "Task is Completed", Snackbar.LENGTH_SHORT).show();
                             }else{
-                                realmMemo.isCompleted = false;
+                                realmTask.isCompleted = false;
                                 Snackbar.make(parent, "Task is uncompleted", Snackbar.LENGTH_SHORT).show();
                             }
 

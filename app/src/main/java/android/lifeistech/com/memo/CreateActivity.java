@@ -2,6 +2,7 @@ package android.lifeistech.com.memo;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.lifeistech.com.memo.R;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,8 +12,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -61,13 +60,13 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                Memo memo = realm.createObject(Memo.class);
-                memo.title = title;
-                memo.updateDate = updateDate;
-                memo.content = content;
-                memo.isCompleted = false;   //最初はタスク未完了
-                memo.dateDeadline = dateDeadline;
-                memo.timeDeadline = timeDeadline;
+                Task task = realm.createObject(Task.class);
+                task.title = title;
+                task.updateDate = updateDate;
+                task.content = content;
+                task.isCompleted = false;   //最初はタスク未完了
+                task.dateDeadline = dateDeadline;
+                task.timeDeadline = timeDeadline;
             }
         });
     }

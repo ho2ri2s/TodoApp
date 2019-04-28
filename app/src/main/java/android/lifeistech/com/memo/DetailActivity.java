@@ -3,12 +3,12 @@ package android.lifeistech.com.memo;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.lifeistech.com.memo.R;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -16,8 +16,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.Calendar;
 
@@ -51,27 +49,27 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     public void showData() {
 
-        final Memo memo = realm.where(Memo.class).equalTo("updateDate",
+        final Task task = realm.where(Task.class).equalTo("updateDate",
                 getIntent().getStringExtra("updateDate")).findFirst();
 
-        titleEditText.setText(memo.title);
-        contentEditText.setText(memo.content);
-        dateText.setText(memo.dateDeadline);
-        timeText.setText(memo.timeDeadline);
+        titleEditText.setText(task.title);
+        contentEditText.setText(task.content);
+        dateText.setText(task.dateDeadline);
+        timeText.setText(task.timeDeadline);
     }
 
     public void update(View view) {
 
-        final Memo memo = realm.where(Memo.class).equalTo("updateDate",
+        final Task task = realm.where(Task.class).equalTo("updateDate",
                 getIntent().getStringExtra("updateDate")).findFirst();
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                memo.title = titleEditText.getText().toString();
-                memo.content = contentEditText.getText().toString();
-                memo.dateDeadline = dateText.getText().toString();
-                memo.timeDeadline = timeText.getText().toString();
+                task.title = titleEditText.getText().toString();
+                task.content = contentEditText.getText().toString();
+                task.dateDeadline = dateText.getText().toString();
+                task.timeDeadline = timeText.getText().toString();
             }
         });
 
@@ -126,10 +124,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void execute(Realm realm) {
 
-                Memo memo = realm.where(Memo.class).equalTo("updateDate",
+                Task task = realm.where(Task.class).equalTo("updateDate",
                         getIntent().getStringExtra("updateDate")).findFirst();
 
-                memo.deleteFromRealm();
+                task.deleteFromRealm();
 
             }
         });
